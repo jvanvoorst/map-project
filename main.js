@@ -11,26 +11,26 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
     });
 
 	// set availible map tiles providers
-	var mapTiles = {
-		opencyclemap: {
-			url: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-            options: {
-            	attribution: 'All maps &copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, map data &copy; <a href="http://www.openstreetmap.org">OpenStreetMap</a> (<a href="http://www.openstreetmap.org/copyright">ODbL</a>'
-            }
-        },
-        fourumaps: {
-        	url: "http://tileserver.4umaps.eu/{z}/{x}/{y}.png",
-        	options: {
-        		attribution: 'All maps &copy; <a href="http://www.4umaps.eu">4uMaps</a>, map data &copy; <a href="http://www.openstreetmap.org">OpenStreetMap</a> (<a href="http://www.openstreetmap.org/copyright">ODbL</a>'
-            }
-        },
-        openstreetmap: {
-            url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            options: {
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }
-        },
-	};
+	// var mapTiles = {
+	// 	opencyclemap: {
+	// 		url: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+    //        options: {
+    //        	attribution: 'All maps &copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, map data &copy; <a href="http://www.openstreetmap.org">OpenStreetMap</a> (<a href="http://www.openstreetmap.org/copyright">ODbL</a>'
+    //        }
+    //    	},
+    //    	fourumaps: {
+    //    	url: "http://tileserver.4umaps.eu/{z}/{x}/{y}.png",
+    //    	options: {
+    //    		attribution: 'All maps &copy; <a href="http://www.4umaps.eu">4uMaps</a>, map data &copy; <a href="http://www.openstreetmap.org">OpenStreetMap</a> (<a href="http://www.openstreetmap.org/copyright">ODbL</a>'
+    //        }
+    //    	},
+    //    	openstreetmap: {
+    //        url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    //        options: {
+    //            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    //        }
+    //    	},
+	// 	};
 
 	// sets the default center and map tiles
 	angular.extend($scope, {
@@ -44,7 +44,26 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
             lng: -0.09,
             zoom: 12
         },
-	    tiles: mapTiles.fourumaps
+        layers : {
+            baselayers : {
+                opencyclemap : {
+                    name: 'OpenCycleMap',
+                    url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
+                    type: 'xyz',
+                },
+                fourumaps : {
+                    name: '4uMaps',
+                    url: 'http://tileserver.4umaps.eu/{z}/{x}/{y}.png',
+                    type: 'xyz',
+                },
+                openstreetmap: {
+                	name : 'OpenStreetMap',
+            		url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            		type : 'xyz',
+            	},
+            }
+        },
+	    // tiles: mapTiles.fourumaps
 	});
 
 	// changes the map tiles provider
@@ -67,6 +86,7 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 		};
 	};
 
+	// sets map center to current geolocation
 	$scope.centerCurrent = function() {
 		$scope.center = {
 			lat: $scope.coords.lat,
