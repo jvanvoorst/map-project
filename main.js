@@ -1,9 +1,14 @@
-var app = angular.module('mapApp', ["leaflet-directive", "ui.bootstrap", "ngAnimate"]);
+var app = angular.module('mapApp', ["leaflet-directive", "ui.bootstrap", "ngAnimate", "geolocation"]);
 
-app.controller("mapController", ['$scope', '$modal', '$log', function($scope, $modal, $log) {
+app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', function($scope, $modal, $log, geolocation) {
 
 	// this is the array of markers
 	$scope.markers = new Array();
+
+	//get coordinates from computer
+	$scope.coords = geolocation.getLocation().then(function(data){
+      return {lat:data.coords.latitude, long:data.coords.longitude};
+    });
 
 	// set availible map tiles providers
 	var mapTiles = {
@@ -30,9 +35,9 @@ app.controller("mapController", ['$scope', '$modal', '$log', function($scope, $m
 	// sets the default center and map tiles
 	angular.extend($scope, {
 	    Boulder: {
-	        lat: 40.05957,
-	        lng: -105.20871,
-	        zoom: 14
+	        lat: 40.011,
+	        lng: -105.271,
+	        zoom: 12
 	    },
 	    London: {
             lat: 51.505,
@@ -59,6 +64,13 @@ app.controller("mapController", ['$scope', '$modal', '$log', function($scope, $m
 			lat: marker.lat,
 			lng: marker.lng,
 			zoom: 12
+		};
+	};
+
+	$scope.centerCurrent = function() {
+		$scope.center = {
+			lat: $scope.coords.lat,
+			lng: $scope.coords.long
 		};
 	};
 
@@ -97,6 +109,7 @@ app.controller("mapController", ['$scope', '$modal', '$log', function($scope, $m
 
     // opens the modal true is for editing already created marker, false is for creating new marker
     $scope.open = function(edit, marker) {
+    	// document.getElementById("inputComment").focus();
 	    var modalInstance = $modal.open( {
       		animation: true,
 	      	templateUrl: 'ModalContent.html',
@@ -110,6 +123,7 @@ app.controller("mapController", ['$scope', '$modal', '$log', function($scope, $m
 	    		marker.message = comment;
 	    	});
 	    } 
+
 	    // false create new marker
 	    else {
 	    	modalInstance.result.then(function(comment) {

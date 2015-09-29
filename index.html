@@ -11,29 +11,43 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="angularjs-geolocation.min.js"></script>
     <script type="text/javascript" src="main.js"></script>
 </head>
 <body ng-controller="mapController">
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<leaflet defaults="defaults" center="center" markers="markers" tiles="tiles" width="100%" height="480px"></leaflet>
 			</div>
 		</div>
 		<div class="row">
-			<button ng-click="changeMapTiles('opencyclemap')" class="btn btn-lg btn-default">OpenCycleMaps</button>
-			<button ng-click="changeMapTiles('fourumaps')" class="btn btn-lg btn-default">4uMaps</button>
-			<button ng-click="changeMapTiles('openstreetmap')" class="btn btn-lg btn-default">OpenStreetMap</button>
+			<div class="col-md-6">
+				<button ng-click="changeMapTiles('opencyclemap')" class="btn btn-sm btn-default">OpenCycleMaps</button>
+				<button ng-click="changeMapTiles('fourumaps')" class="btn btn-sm btn-default">4uMaps</button>
+				<button ng-click="changeMapTiles('openstreetmap')" class="btn btn-sm btn-default">OpenStreetMap</button>
+			</div>
+			<div class="col-md-3 pull-right">
+				<button ng-click="centerCurrent()" class="btn btn-sm btn-default">Current Location</button>
+				<button ng-click="changeCenter(London)" class="btn btn-sm btn-default pull-right">London</button>
+				<button ng-click="changeCenter(Boulder)" class="btn btn-sm btn-default pull-right">Boulder</button>
+			</div>
 		</div>
-		<div class="row">
-			<button ng-click="changeCenter(London)" class="btn btn-lg btn-default">London</button>
-			<button ng-click="changeCenter(Boulder)" class="btn btn-lg btn-default">Boulder</button>
-		</div>
-		<div class="row" ng-repeat="marker in markers">
-			<p>{{marker.message}}, Latitude: {{marker.lat}}, Longitude: {{marker.lng}}</p>
-			<button ng-click="centerOnMarker(marker)">Center</button>
-			<button ng-click="editMarker(marker)">Edit</button>
-			<button ng-click="deleteMarker($index)">Delete</button>
+		<div class="row bg-info" ng-repeat="marker in markers">
+			<div class="col-md-6">
+				<ul>
+					<li>Comment: {{marker.message}}</li>
+					<ul>
+						<li>Latitude: {{marker.lat | number : 4}}</li>
+						<li>Longitude: {{marker.lng | number : 4}}</li>
+					</ul>
+				</ul>
+			</div>
+			<div class="col-md-4">
+				<button ng-click="centerOnMarker(marker)">Center</button>
+				<button ng-click="editMarker(marker)">Edit</button>
+				<button ng-click="deleteMarker($index)">Delete</button>
+			</div>	
 		</div>
 	</div>
 	
@@ -43,7 +57,7 @@
 	            <h3 class="modal-title">Edit Comment</h3>
 	        </div>
 	        <div class="modal-body">
-	        	<input type="comment" class="form-control" placeholder="comment" ng-model="comment">
+	        	<input type="comment" class="form-control" placeholder="comment" ng-model="comment" autofocus>
 	        </div>
 	        <div class="modal-footer">
 	            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
@@ -51,6 +65,7 @@
 	        </div>
 	    </script>
 	</div>
+	<p>Your Location: {{coords}}</p>
 
 	<script type="text/javascript" src="main.js"></script>
 </body>
