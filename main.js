@@ -129,7 +129,6 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 
     // opens the modal true is for editing already created marker, false is for creating new marker
     $scope.open = function(edit, marker) {
-    	// document.getElementById("inputComment").focus();
 	    var modalInstance = $modal.open( {
       		animation: true,
 	      	templateUrl: 'ModalContent.html',
@@ -144,7 +143,7 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 	    	});
 	    } 
 
-	    // false create new marker
+	    // false - create new marker
 	    else {
 	    	modalInstance.result.then(function(comment) {
 	    		$scope.addMarker(comment);
@@ -169,5 +168,10 @@ app.controller('modalController', ['$scope', '$modalInstance', function($scope, 
   	};
 
 }]);
+
+// var gpx = "hymasa.gpx";
+// new L.GPX(gpx, {async: true}).on('loaded', function(e) {
+//   map.fitBounds(e.target.getBounds());
+// }).addTo(map);
 
 

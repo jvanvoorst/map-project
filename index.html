@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="mapApp">
+
 <head>
 	<title>Map Project</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,12 +13,16 @@
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="angularjs-geolocation.min.js"></script>
+    <script type="text/javascript" src="gpx.js"></script>
     <script type="text/javascript" src="main.js"></script>
 </head>
+
 <body ng-controller="mapController">
+
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
+				<!-- This is the map being displayed -->
 				<leaflet defaults="defaults" center="center" markers="markers" layers="layers" width="100%" height="480px"></leaflet>
 			</div>
 		</div>
@@ -27,12 +32,14 @@
 				<button ng-click="changeMapTiles('fourumaps')" class="btn btn-sm btn-default">4uMaps</button>
 				<button ng-click="changeMapTiles('openstreetmap')" class="btn btn-sm btn-default">OpenStreetMap</button>
 			</div> -->
+			<!-- Buttons for changing map center location -->
 			<div class="col-md-3 pull-right">
 				<button ng-click="centerCurrent()" class="btn btn-sm btn-default">Current Location</button>
 				<button ng-click="changeCenter(London)" class="btn btn-sm btn-default pull-right">London</button>
 				<button ng-click="changeCenter(Boulder)" class="btn btn-sm btn-default pull-right">Boulder</button>
 			</div>
 		</div>
+		<!-- Display of coords and message for user created markers as well as delete, edit center buttons for each -->
 		<div class="row bg-info" ng-repeat="marker in markers">
 			<div class="col-md-6">
 				<ul>
@@ -51,6 +58,7 @@
 		</div>
 	</div>
 	
+	<!-- Modal display container -->
 	<div>
 	    <script type="text/ng-template" id="ModalContent.html">
 	        <div class="modal-header">
@@ -65,7 +73,6 @@
 	        </div>
 	    </script>
 	</div>
-	<p>Your Location: {{coords}}</p>
 
 	<script type="text/javascript" src="main.js"></script>
 </body>
