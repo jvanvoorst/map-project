@@ -1,9 +1,11 @@
-//Angular
-var app = angular.module('mapApp', ["leaflet-directive", "ui.bootstrap"]);
+var app = angular.module('mapApp', ["leaflet-directive", "ui.bootstrap", "ngAnimate"]);
 
 app.controller("mapController", ['$scope', '$modal', '$log', function($scope, $modal, $log) {
 
-	// set availible map tiles
+	// this is the array of markers
+	$scope.markers = new Array();
+
+	// set availible map tiles providers
 	var mapTiles = {
 		opencyclemap: {
 			url: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
@@ -35,114 +37,103 @@ app.controller("mapController", ['$scope', '$modal', '$log', function($scope, $m
 	    London: {
             lat: 51.505,
             lng: -0.09,
-            zoom: 8
+            zoom: 12
         },
 	    tiles: mapTiles.fourumaps
 	});
 
+	// changes the map tiles provider
 	$scope.changeMapTiles = function(provider) {
 		$scope.tiles = mapTiles[provider];
 	};
 
-	$scope.markers = new Array();
+	// centers the map on the selected city
+	$scope.center = $scope.Boulder;
+	$scope.changeCenter = function(location) {
+		$scope.center = location;
+	};
 
-	$scope.$on("leafletDirectiveMap.click", function(event, args){
-        var clickEvent = args.leafletEvent;
-        var comment = 
-        $scope.markers.push({
-            lat: clickEvent.latlng.lat,
-            lng: clickEvent.latlng.lng,
-            message: "My Added Marker"
-        });
-        console.log($scope.markers);
+	// centers the map on the selected marker
+	$scope.centerOnMarker = function(marker) {
+		$scope.center = {
+			lat: marker.lat,
+			lng: marker.lng,
+			zoom: 12
+		};
+	};
+
+	// changes the markers lat/lon to the new value when dragged to a new location
+	$scope.$on("leafletDirectiveMarker.dragend", function(event, args){
+		console.log(event)
+		console.log(args)
+        $scope.markers[args.modelName].lat = args.model.lat;
+        $scope.markers[args.modelName].lng = args.model.lng;
     });
 
-    $scope.markerComment = '';
+    // edit the markers comment
+    $scope.editMarker = function(marker) {
+    	$scope.open(true, marker);
+    	console.log(marker);
+    };
 
-    $scope.open = function() {
+    // delete the marker
+    $scope.deleteMarker = function(index) {
+    	$scope.markers.splice(index, 1);
+    }
+
+    // on map click event to create new marker
+	$scope.$on("leafletDirectiveMap.click", function(event, args){
+        var clickEvent = args.leafletEvent;
+        $scope.open(false)
+        $scope.addMarker = function(comment) {
+        	$scope.markers.push({
+            	lat: clickEvent.latlng.lat,
+            	lng: clickEvent.latlng.lng,
+            	message: comment,
+            	draggable: true,
+        	});
+        };
+    });
+
+    // opens the modal true is for editing already created marker, false is for creating new marker
+    $scope.open = function(edit, marker) {
 	    var modalInstance = $modal.open( {
       		animation: true,
 	      	templateUrl: 'ModalContent.html',
 	      	controller: 'modalController',
-	      	size: 'sm',
-	      	resolve: {
-	        	comment: function () {
-	        	return $scope.markerComment;
-	        	}
-	    	}
+	      	size: 'lg',
 	    });
+	    
+	    // true - edit comment
+	    if (edit) {
+	    	modalInstance.result.then(function(comment) {
+	    		marker.message = comment;
+	    	});
+	    } 
+	    // false create new marker
+	    else {
+	    	modalInstance.result.then(function(comment) {
+	    		$scope.addMarker(comment);
+	    	});
+	    }
     };
+
 
 }]);
 
 // Modal Angular controller
-app.controller('modalController', ['$scope', function ($scope, $modalInstance, markerComment) {
+app.controller('modalController', ['$scope', '$modalInstance', function($scope, $modalInstance) {
 
-  	$scope.markerComment = markerComment;
-
-  	$scope.ok = function () {
-    	$modalInstance.close($scope.selected.item);
+	// click ok sends back the comment from the modal to be used in creating new marker or editing current one
+  	$scope.ok = function() {
+    	$modalInstance.close($scope.comment);
   	};
 
-  	$scope.cancel = function () {
+  	// click cancel cancels the modal w/o creating new marker or editing comment
+  	$scope.cancel = function() {
     	$modalInstance.dismiss('cancel');
   	};
+
 }]);
 
-
-// sets map view with lat/lon and then zoom level, this one is home
-// var map = L.map('map').setView([40.05957, -105.20871], 15);
-
-// // sets tileserver
-// L.tileLayer('http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', {
-// 	attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-// 	maxZoom : 18,
-// 	id: 'map.project'
-// }).addTo(map);
-
-// this one is for 4umaps but some parts are not working
-// L.tileLayer('http://tileserver.4umaps.eu/{z}/{x}/{y}.png', {
-// 	attribution: '&copy; <a href="http://www.4umaps.eu">4UMaps.eu</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-// 	maxZoom : 15,
-// 	id: 'map.project'
-// }).addTo(map);
-
-// Create marker, circle, and polygon:
-// var marker = L.marker([51.5, -0.09]).addTo(map);
-// var circle = L.circle([51.508, -0.11], 500, {
-//     color: 'red',
-//     fillColor: '#f03',
-//     fillOpacity: 0.5
-// }).addTo(map);
-// var polygon = L.polygon([
-//     [51.509, -0.08],
-//     [51.503, -0.06],
-//     [51.51, -0.047]
-// ]).addTo(map);
-
-// Bind popup to elements:
-// marker.bindPopup("<b>Hello world!</b><br>I am a popup.");
-// circle.bindPopup("I am a circle.");
-// polygon.bindPopup("I am a polygon.");
-
-
-// function onMapClick(e) {
-//     alert("You clicked the map at " + e.latlng);
-//     createMarker(e.latlng);
-// }
-
-// map.on('click', onMapClick);
-
-// map.on('click', onMapClick);
-
-// var createMarker = function(latlng) {
-// 	var marker = L.marker([latlng.lat, latlng.lng]).addTo(map);
-// 	marker.bindPopup(textMarker())
-// 	console.log(marker);
-// };
-
-// var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.').addTo(map),
-//     denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.').addTo(map),
-//     aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.').addTo(map),
-//     golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(map);
 

@@ -4,6 +4,7 @@
 	<title>Map Project</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-animate.min.js"></script>
     <script type="text/javascript"src="angular-simple-logger.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
     <script src="angular-leaflet-directive.min.js"></script>
@@ -16,7 +17,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<leaflet defaults="defaults" lf-center="Boulder" markers="markers" tiles="tiles" width="100%" height="480px"></leaflet>
+				<leaflet defaults="defaults" center="center" markers="markers" tiles="tiles" width="100%" height="480px"></leaflet>
 			</div>
 		</div>
 		<div class="row">
@@ -25,28 +26,30 @@
 			<button ng-click="changeMapTiles('openstreetmap')" class="btn btn-lg btn-default">OpenStreetMap</button>
 		</div>
 		<div class="row">
-			<button ng-click="changeCenter('London')" class="btn btn-lg btn-default">London</button>
-			<button ng-click="changeCenter('Boulder')" class="btn btn-lg btn-default">Boulder</button>
+			<button ng-click="changeCenter(London)" class="btn btn-lg btn-default">London</button>
+			<button ng-click="changeCenter(Boulder)" class="btn btn-lg btn-default">Boulder</button>
 		</div>
 		<div class="row" ng-repeat="marker in markers">
 			<p>{{marker.message}}, Latitude: {{marker.lat}}, Longitude: {{marker.lng}}</p>
+			<button ng-click="centerOnMarker(marker)">Center</button>
+			<button ng-click="editMarker(marker)">Edit</button>
+			<button ng-click="deleteMarker($index)">Delete</button>
 		</div>
 	</div>
 	
-	<div ng-controller="modalController">
+	<div>
 	    <script type="text/ng-template" id="ModalContent.html">
 	        <div class="modal-header">
-	            <h3 class="modal-title">Please enter a comment</h3>
+	            <h3 class="modal-title">Edit Comment</h3>
 	        </div>
 	        <div class="modal-body">
-	            
+	        	<input type="comment" class="form-control" placeholder="comment" ng-model="comment">
 	        </div>
 	        <div class="modal-footer">
 	            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
 	            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
 	        </div>
 	    </script>
-	    <button type="button" class="btn btn-default" ng-click="open()">Open me!</button>
 	</div>
 
 	<script type="text/javascript" src="main.js"></script>
