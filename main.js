@@ -3,36 +3,14 @@ var app = angular.module('mapApp', ["leaflet-directive", "ui.bootstrap", "ngAnim
 app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', function($scope, $modal, $log, geolocation) {
 
 	// this is the array of markers
-	$scope.markers = new Array();
+	$scope.markers = markers14er	
 
 	//get coordinates from computer
 	$scope.coords = geolocation.getLocation().then(function(data){
       return {lat:data.coords.latitude, long:data.coords.longitude};
     });
 
-	// set availible map tiles providers
-	// var mapTiles = {
-	// 	opencyclemap: {
-	// 		url: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-    //        options: {
-    //        	attribution: 'All maps &copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, map data &copy; <a href="http://www.openstreetmap.org">OpenStreetMap</a> (<a href="http://www.openstreetmap.org/copyright">ODbL</a>'
-    //        }
-    //    	},
-    //    	fourumaps: {
-    //    	url: "http://tileserver.4umaps.eu/{z}/{x}/{y}.png",
-    //    	options: {
-    //    		attribution: 'All maps &copy; <a href="http://www.4umaps.eu">4uMaps</a>, map data &copy; <a href="http://www.openstreetmap.org">OpenStreetMap</a> (<a href="http://www.openstreetmap.org/copyright">ODbL</a>'
-    //        }
-    //    	},
-    //    	openstreetmap: {
-    //        url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    //        options: {
-    //            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    //        }
-    //    	},
-	// 	};
-
-	// sets the default center and map tiles
+	// sets the available centers and map layers 
 	angular.extend($scope, {
 	    Boulder: {
 	        lat: 40.011,
@@ -46,25 +24,55 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
         },
         layers : {
             baselayers : {
-                opencyclemap : {
-                    name: 'OpenCycleMap',
-                    url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
-                    type: 'xyz',
-                },
                 fourumaps : {
                     name: '4uMaps',
                     url: 'http://tileserver.4umaps.eu/{z}/{x}/{y}.png',
                     type: 'xyz',
                 },
-                openstreetmap: {
+                opencyclemap : {
+                    name: 'OpenCycleMap',
+                    url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
+                    type: 'xyz',
+                },
+                openstreetmap : {
                 	name : 'OpenStreetMap',
             		url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             		type : 'xyz',
             	},
-            }
+            },
+	        overlays : {
+	        	fourteeners : {
+	        		type : 'group',
+	        		name : '14ers',
+	        		visible : false,
+	        	},
+	        	user : {
+	        		type : 'group',
+	        		name : 'User',
+	        		visible : true
+	        	}
+	        }
+	    },
+	    extraMarkerIconRed : {
+            type: 'extraMarker',
+            icon: 'fa-star',
+            markerColor: 'red',
+            prefix: 'fa',
+            shape: 'circle'
         },
-	    // tiles: mapTiles.fourumaps
+        extraMarkerIconBlue : {
+        	type : 'extraMarker',
+        	icon : 'fa-star',
+        	markerColor : 'blue-dark',
+        	prefix : 'fa',
+        	shape : 'circle'
+        }
 	});
+
+	// add blue icon to fourteener object in the markers array
+	for (i = 0; i < $scope.markers.length; i++) {
+		$scope.markers[i].icon = $scope.extraMarkerIconBlue;
+	}
 
 	// changes the map tiles provider
 	$scope.changeMapTiles = function(provider) {
@@ -72,9 +80,9 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 	};
 
 	// centers the map on the selected city
-	$scope.center = $scope.Boulder;
+	$scope.center = angular.copy($scope.Boulder);
 	$scope.changeCenter = function(location) {
-		$scope.center = location;
+		$scope.center = angular.copy(location);
 	};
 
 	// centers the map on the selected marker
@@ -96,8 +104,6 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 
 	// changes the markers lat/lon to the new value when dragged to a new location
 	$scope.$on("leafletDirectiveMarker.dragend", function(event, args){
-		console.log(event)
-		console.log(args)
         $scope.markers[args.modelName].lat = args.model.lat;
         $scope.markers[args.modelName].lng = args.model.lng;
     });
@@ -105,13 +111,17 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
     // edit the markers comment
     $scope.editMarker = function(marker) {
     	$scope.open(true, marker);
-    	console.log(marker);
     };
 
     // delete the marker
-    $scope.deleteMarker = function(index) {
-    	$scope.markers.splice(index, 1);
-    }
+    $scope.deleteMarker = function(marker) {
+    	for (var i = 0; i < $scope.markers.length; i++) {
+    		if ($scope.markers[i].message === marker.message) {
+    			$scope.markers.splice(i, 1);
+    			return;
+    		}
+    	}
+    };
 
     // on map click event to create new marker
 	$scope.$on("leafletDirectiveMap.click", function(event, args){
@@ -119,10 +129,12 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
         $scope.open(false)
         $scope.addMarker = function(comment) {
         	$scope.markers.push({
-            	lat: clickEvent.latlng.lat,
-            	lng: clickEvent.latlng.lng,
-            	message: comment,
-            	draggable: true,
+            	lat : clickEvent.latlng.lat,
+            	lng : clickEvent.latlng.lng,
+            	message : comment,
+            	draggable : true,
+            	layer : 'user',
+            	icon : $scope.extraMarkerIconRed,
         	});
         };
     });
@@ -169,9 +181,6 @@ app.controller('modalController', ['$scope', '$modalInstance', function($scope, 
 
 }]);
 
-// var gpx = "hymasa.gpx";
-// new L.GPX(gpx, {async: true}).on('loaded', function(e) {
-//   map.fitBounds(e.target.getBounds());
-// }).addTo(map);
+
 
 
