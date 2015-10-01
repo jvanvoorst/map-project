@@ -1,4 +1,8 @@
 .btn-width {
 	width: 100%;
 }
+.jmb-image {
+	background-image: url("images/IMG_0626.jpg");
+	background-size: cover;	
+}
 

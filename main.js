@@ -3,7 +3,19 @@ var app = angular.module('mapApp', ["leaflet-directive", "ui.bootstrap", "ngAnim
 app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', function($scope, $modal, $log, geolocation) {
 
 	// this is the array of markers
-	$scope.markers = markers14er	
+	$scope.markers = markers14er
+
+    // set the accordians initial state to closed using a non-primitive to get working
+    $scope.userOpen = {
+        show : false
+    };
+    $scope.fourteenerOpen = {
+        show : false
+    };
+
+    $scope.searchText = {
+        text : ''
+    }
 
 	//get coordinates from computer
 	$scope.coords = geolocation.getLocation().then(function(data){
@@ -15,12 +27,20 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 	    Boulder: {
 	        lat: 40.011,
 	        lng: -105.271,
-	        zoom: 12
+	        zoom: 12,
 	    },
 	    London: {
             lat: 51.505,
             lng: -0.09,
-            zoom: 12
+            zoom: 12,
+        },
+        tmb : {
+            lat : 45.7715,
+            lng : 6.8901,
+            zoom : 12,
+        },
+        defaults : {
+            scrollWheelZoom : false
         },
         layers : {
             baselayers : {
@@ -44,7 +64,7 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 	        	fourteeners : {
 	        		type : 'group',
 	        		name : '14ers',
-	        		visible : false,
+	        		visible : true,
 	        	},
 	        	user : {
 	        		type : 'group',
@@ -91,7 +111,8 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 			lat: marker.lat,
 			lng: marker.lng,
 			zoom: 12
-		};
+        };
+        scroll(0,0);
 	};
 
 	// sets map center to current geolocation
