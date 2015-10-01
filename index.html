@@ -28,10 +28,14 @@
 
 	<div class="container">
 		<div class="jumbotron jmb-image" ng-click="changeCenter(tmb)">
+			<div class="row">
 				<h1 class="pull-right title">Map Project</h1>
-				<div>
-					<p class="message">This is a mapping demo page. The map can be changed between three different map providers using the layers icon in the upper right hand corner of the map. Additionally the layers icon allows the display toggling of the Colorado fourteeners map points as well as user created map points. To create a map point simply click on the map and then provide a name in the popup. Once created the map points can be moved to a new location by clicking and dragging the point. The name can be changed, the map centered on the  point, and the point deleted using the buttons next to the map point name in the list.</p>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<p class="message">This is my mapping demo page. The map can be changed between three different map providers using the layers icon in the upper right hand corner of the map. Additionally the layers icon allows the display toggling of the Colorado fourteeners map points as well as user created map points. To create a map point simply click on the map and then provide a name in the popup. Once created the map points can be moved to a new location by clicking and dragging the point. The name can be changed, the map centered on the point, and the point deleted using the buttons next to the map point name in the list.</p>
 				</div>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12">
@@ -59,7 +63,7 @@
 					<label class="checkbox-inline"><input type="checkbox" ng-model="fourteenerOpen.show">14er Map Points</label>
 				</accordion-group>
 				<!-- User created map points accordion -->
-				<accordion-group heading="User Created map points" is-open="userOpen.show">
+				<accordion-group heading="User Created map points" is-open="userOpen.show" class="list-group-background-user">
 					<div class="list-group" ng-repeat="marker in markers | filter : {layer : 'user'} | filter : searchText.text">
 						<button type="button" class="list-group-item" ng-click="centerOnMarker(marker)">
 							<ul>
@@ -70,12 +74,12 @@
 								</ul>
 							</ul>
 							<button class="btn btn-sm btn-primary" ng-click="editMarker(marker)">Edit</button>
-							<button class="btn btn-sm btn-danger" ng-click="deleteMarker(marker)">Delete</button>
+							<button class="btn btn-sm btn-warning" ng-click="deleteMarker(marker)">Delete</button>
 						</button>
 					</div>
 				</accordion-group>
 				<!-- 14er dataset accordion -->
-				<accordion-group heading="Colorado 14ers" is-open="fourteenerOpen.show">
+				<accordion-group heading="Colorado 14ers" is-open="fourteenerOpen.show" class="list-group-background-14er">
 					<div class="list-group" ng-repeat="marker in markers | filter : {layer : 'fourteener'} | filter : searchText.text">
 						<button type="button" class="list-group-item" ng-click="centerOnMarker(marker)">
 						<ul>
@@ -94,7 +98,7 @@
 		<hr>
 
 		<footer>
-			<p>Maps:<a href="www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> <a href="www.4umaps.eu">&copy; 4UMaps.eu</a><a href="http://www.opencyclemap.org"/>&copy; OpenCycleMaps</a></p>
+			<p>Maps: <a href="www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> <a href="www.4umaps.eu">&copy; 4UMaps.eu </a><a href="http://www.opencyclemap.org"/>&copy; OpenCycleMaps</a></p>
 		</footer>
 
 	</div>

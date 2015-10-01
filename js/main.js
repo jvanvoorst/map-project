@@ -114,7 +114,7 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 			lng: marker.lng,
 			zoom: 12
         };
-        scrollTo(document.body, 350, 0);
+        scrollTo(document.body, 425, 0);
 	};
 
 	// sets map center to current geolocation
