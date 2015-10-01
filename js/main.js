@@ -1,5 +1,7 @@
 var app = angular.module('mapApp', ["leaflet-directive", "ui.bootstrap", "ngAnimate", "geolocation"]);
 
+    
+
 app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', function($scope, $modal, $log, geolocation) {
 
 	// this is the array of markers
@@ -12,17 +14,16 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
     $scope.fourteenerOpen = {
         show : false
     };
-
     $scope.searchText = {
         text : ''
     }
 
-	//get coordinates from computer
+	// get coordinates from computer
 	$scope.coords = geolocation.getLocation().then(function(data){
       return {lat:data.coords.latitude, long:data.coords.longitude};
     });
 
-	// sets the available centers and map layers 
+	// sets the available centers, map layers, overlay groups: user and 14er, and two icons
 	angular.extend($scope, {
 	    Boulder: {
 	        lat: 40.011,
@@ -40,7 +41,8 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
             zoom : 12,
         },
         defaults : {
-            scrollWheelZoom : false
+            scrollWheelZoom : false,
+            maxZoom : 15,
         },
         layers : {
             baselayers : {
@@ -94,10 +96,10 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 		$scope.markers[i].icon = $scope.extraMarkerIconBlue;
 	}
 
-	// changes the map tiles provider
-	$scope.changeMapTiles = function(provider) {
-		$scope.tiles = mapTiles[provider];
-	};
+	// // changes the map tiles provider
+	// $scope.changeMapTiles = function(provider) {
+	// 	$scope.tiles = mapTiles[provider];
+	// };
 
 	// centers the map on the selected city
 	$scope.center = angular.copy($scope.Boulder);
@@ -112,7 +114,7 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 			lng: marker.lng,
 			zoom: 12
         };
-        scroll(0,0);
+        scrollTo(document.body, 350, 0);
 	};
 
 	// sets map center to current geolocation
@@ -157,6 +159,7 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
             	layer : 'user',
             	icon : $scope.extraMarkerIconRed,
         	});
+            $scope.userOpen.show = true;
         };
     });
 

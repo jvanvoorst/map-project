@@ -7,19 +7,20 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-animate.min.js"></script>
-    <script type="text/javascript"src="angular-simple-logger.js"></script>
+    <script type="text/javascript"src="js/angular-simple-logger.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
-    <script type="text/javascript" src="angularjs-geolocation.min.js"></script>
-    <script src="leaflet.extra-markers.js"></script>
-    <script src="angular-leaflet-directive.min.js"></script>
-	<script type="text/javascript" src="markers.js"></script> 
-    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="js/angularjs-geolocation.min.js"></script>
+    <script src="js/leaflet.extra-markers.js"></script>
+    <script src="js/angular-leaflet-directive.min.js"></script>
+	<script type="text/javascript" src="js/markers.js"></script> 
+    <script type="text/javascript" src="js/main.js"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
-    <link rel="stylesheet" href="leaflet.extra-markers.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="css/leaflet.extra-markers.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 </head>
 
 <body ng-controller="mapController">
@@ -27,10 +28,10 @@
 
 	<div class="container">
 		<div class="jumbotron jmb-image" ng-click="changeCenter(tmb)">
-			<h1 class="pull-right">Map Project</h1>
-			<div>
-				<p>This is a mapping demo page. The map can be changed between three different map providers using the layers icon in the upper right hand corner of the map. Additionally the layers icon allows the display toggling of the Colorado fourteeners map points as well as user created map points. To create a map point simply click on the map and then provide a name in the popup. Once created the map points can be moved to a new location by clicking and dragging the point. The name can be changed, the map centered on the  point, and the point deleted using the buttons next to the map point name in the list.</p>
-			</div>
+				<h1 class="pull-right title">Map Project</h1>
+				<div>
+					<p class="message">This is a mapping demo page. The map can be changed between three different map providers using the layers icon in the upper right hand corner of the map. Additionally the layers icon allows the display toggling of the Colorado fourteeners map points as well as user created map points. To create a map point simply click on the map and then provide a name in the popup. Once created the map points can be moved to a new location by clicking and dragging the point. The name can be changed, the map centered on the  point, and the point deleted using the buttons next to the map point name in the list.</p>
+				</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12">
@@ -41,63 +42,42 @@
 		<div class="row">
 			
 			<!-- Buttons for changing map center location -->
-			<div class="col-md-3 pull-right">
-				<button ng-click="centerCurrent()" class="btn btn-sm btn-default">Current Location</button>
+			<div class="col-md-4 pull-right">
+				<button ng-click="centerCurrent()" class="btn btn-sm btn-default pull-right" disabled="disabled">Current Location</button>
 				<button ng-click="changeCenter(London)" class="btn btn-sm btn-default pull-right">London</button>
 				<button ng-click="changeCenter(Boulder)" class="btn btn-sm btn-default pull-right">Boulder</button>
 			</div>
 		</div>
 
-		<!-- Search markers comments -->
-		<!-- <div class="row">
-			<div>
-				<label>Search<input ng-model="searchText"</label>
-			</div>
-		</div> -->
-
-		<!-- Display of coords and message for user created markers as well as delete, edit center buttons for each -->
-		<!-- <div class="row bg-warning" ng-repeat="marker in markers | filter : {layer : 'user'} | filter : searchText">
-			<div class="col-md-6">
-				<ul>
-					<li><h4>{{marker.message}}</h4></li>
-					<ul>
-						<li>Latitude: {{marker.lat | number : 3}}</li>
-						<li>Longitude: {{marker.lng | number : 3}}</li>
-					</ul>
-				</ul>
-			</div>
-			<div class="col-md-1">
-				<button class="btn btn-default btn-width btn-sm" ng-click="centerOnMarker(marker)">Center</button>
-				<button class="btn btn-default btn-width btn-sm" ng-click="editMarker(marker)">Edit</button>
-				<button class="btn btn-default btn-width btn-sm" ng-click="deleteMarker(marker)">Delete</button>
-			</div>
-		</div> -->
-
-		<!-- 14ers markers -->
-		<!-- <div class="row bg-info" ng-repeat="marker in markers | filter : {layer : 'fourteener'} | filter : searchText">
-			<div class="col-md-6">
-				<ul>
-					<li><h4>{{marker.message}}</h4></li>
-					<ul>
-						<li>Latitude: {{marker.lat | number : 3}}</li>
-						<li>Longitude: {{marker.lng | number : 3}}</li>
-					</ul>
-				</ul>
-			</div>
-			<div class="col-md-1">
-				<button class="btn btn-default btn-width btn-sm" ng-click="centerOnMarker(marker)">Center</button>
-			</div>	
-		</div> -->
- 
-		<accordion close-others="false">
-			<accordion-group heading="Search" is-open="false">
-				<input class="form-control" ng-model="searchText.text">
-				<label class="checkbox-inline"><input type="checkbox" ng-model="userOpen.show">User Map Points</label>
-				<label class="checkbox-inline"><input type="checkbox" ng-model="fourteenerOpen.show">14er Map Points</label>
-			</accordion-group>
-			<accordion-group heading="User Created map points" is-open="userOpen.show">
-				<div class="list-group" ng-repeat="marker in markers | filter : {layer : 'user'} | filter : searchText.text">
-					<button type="button" class="list-group-item" ng-click="centerOnMarker(marker)">
+		<!-- Accordion group: Search box, user and 14er map points -->
+		<div class="accordion">
+			<accordion close-others="false" class="accordion">
+				<!-- Search accordion -->
+				<accordion-group heading="Search" is-open="false">
+					<input class="form-control" ng-model="searchText.text">
+					<label class="checkbox-inline"><input type="checkbox" ng-model="userOpen.show">User Map Points</label>
+					<label class="checkbox-inline"><input type="checkbox" ng-model="fourteenerOpen.show">14er Map Points</label>
+				</accordion-group>
+				<!-- User created map points accordion -->
+				<accordion-group heading="User Created map points" is-open="userOpen.show">
+					<div class="list-group" ng-repeat="marker in markers | filter : {layer : 'user'} | filter : searchText.text">
+						<button type="button" class="list-group-item" ng-click="centerOnMarker(marker)">
+							<ul>
+								<li><h4>{{marker.message}}</h4></li>
+								<ul>
+									<li>Latitude: {{marker.lat | number : 3}}</li>
+									<li>Longitude: {{marker.lng | number : 3}}</li>
+								</ul>
+							</ul>
+							<button class="btn btn-sm btn-primary" ng-click="editMarker(marker)">Edit</button>
+							<button class="btn btn-sm btn-danger" ng-click="deleteMarker(marker)">Delete</button>
+						</button>
+					</div>
+				</accordion-group>
+				<!-- 14er dataset accordion -->
+				<accordion-group heading="Colorado 14ers" is-open="fourteenerOpen.show">
+					<div class="list-group" ng-repeat="marker in markers | filter : {layer : 'fourteener'} | filter : searchText.text">
+						<button type="button" class="list-group-item" ng-click="centerOnMarker(marker)">
 						<ul>
 							<li><h4>{{marker.message}}</h4></li>
 							<ul>
@@ -105,25 +85,11 @@
 								<li>Longitude: {{marker.lng | number : 3}}</li>
 							</ul>
 						</ul>
-						<button class="btn btn-sm btn-primary" ng-click="editMarker(marker)">Edit</button>
-						<button class="btn btn-sm btn-danger" ng-click="deleteMarker(marker)">Delete</button>
-					</button>
-				</div>
-			</accordion-group>
-			<accordion-group heading="Colorado 14ers" is-open="fourteenerOpen.show">
-				<div class="list-group" ng-repeat="marker in markers | filter : {layer : 'fourteener'} | filter : searchText.text">
-					<button type="button" class="list-group-item" ng-click="centerOnMarker(marker)">
-					<ul>
-						<li><h4>{{marker.message}}</h4></li>
-						<ul>
-							<li>Latitude: {{marker.lat | number : 3}}</li>
-							<li>Longitude: {{marker.lng | number : 3}}</li>
-						</ul>
-					</ul>
-					</button>
-				</div>
-			</accordion-group>
-		</accordion>
+						</button>
+					</div>
+				</accordion-group>
+			</accordion>
+		</div>
 
 		<hr>
 
@@ -149,7 +115,7 @@
 	    </script>
 	</div>
 
-	<script type="text/javascript" src="main.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
 
 
 </body>

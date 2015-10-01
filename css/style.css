@@ -1,0 +1,17 @@
+.btn-width {
+	width: 100%;
+}
+.jmb-image {
+	background-image: url("../images/IMG_0626.jpg");
+	background-size: cover;	
+	margin-top: 25px;
+}
+.accordion {
+	padding-top: 7px;
+}
+.title {
+	font-family: 'Lato';
+}
+.message {
+	color: black;
+}
