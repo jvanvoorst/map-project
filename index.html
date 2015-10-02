@@ -63,7 +63,7 @@
 					<label class="checkbox-inline"><input type="checkbox" ng-model="fourteenerOpen.show">14er Map Points</label>
 				</accordion-group>
 				<!-- User created map points accordion -->
-				<accordion-group heading="User Created map points" is-open="userOpen.show" class="list-group-background-user">
+				<accordion-group heading="User map points" is-open="userOpen.show" class="list-group-background-user">
 					<div class="list-group" ng-repeat="marker in markers | filter : {layer : 'user'} | filter : searchText.text">
 						<button type="button" class="list-group-item" ng-click="centerOnMarker(marker)">
 							<ul>
