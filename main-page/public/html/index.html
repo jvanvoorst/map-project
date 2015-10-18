@@ -1,0 +1,93 @@
+<html ng-app="myApp">
+<head>
+	<title>HomePage</title>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-animate.min.js"></script>
+    <script type="text/javascript"src="../js/angular-simple-logger.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
+
+	<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../style/style.css">
+
+</head>
+
+<body ng-controller="mainController" ng-cloak>
+	<div class="background">
+		<div class="container nav-container">
+			<div class="row">
+				<div class="col-lg-3 nav-start nav-box-red" ng-click="toggle('about')">About Me</div>
+				<div class="col-lg-3 nav-start nav-box-yellow" ng-click="toggle('contact')">Contact</div>
+				<div class="col-lg-3 nav-start nav-box-blue" ng-click="toggle('portfolio')">Portfolio</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3 nav-box nav-box-red" ng-show="about" ng-click="toggle('about')">
+					<p class="nav-box-text">I have spent the last 14 years in the Information Technology field. During that time I experienced many aspects of IT and found a passion and desire to learn more about programming, and databases. I decided that I would pursue my dream of becoming a web application developer. To reach this goal I am currently attending the RefactorU full-stack boot-camp and will be finished and looking for a junior position in early November.</p>
+					<h3 class="pull-right link-text-red" ng-click="open('resume')">Resume</h3>
+				</div>
+				<div ng-show="contact" >
+					<div class="col-lg-3"></div>
+					<div class="col-lg-3 nav-box nav-box-yellow" ng-click="toggle('contact')">
+						<p>Justin Van Voorst</p>
+						<p>303-516-4002</p>
+						<a href="mailto:justin.vanvoorst@gmail.com">justin.vanvoorst@gmail.com</p>
+						<p><a href="https://www.linkedin.com/in/justinvanvoorst">LinkedIn - justinvanvoorst</a></p>
+						<p><a href="https://github.com/jvanvoorst">GitHub - jvanvoorst</a></p>
+					</div>
+				</div>
+				<div>
+					<div class="col-lg-3"></div>
+					<div class="col-lg-3"></div>
+					<div class="col-lg-3 nav-box nav-box-blue" ng-show="portfolio" ng-click="toggle('portfolio')">
+						<p>These are some of the projects that I have been working on recently at the link below.</p>
+						<h3 class="pull-right link-text-blue" ng-click="open('portfolio')">Portfolio</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Resume Modal Body -->
+	<div>
+	    <script type="text/ng-template" id="resumeContent.html">
+	        <div class="modal-header">
+	            <button ng-click="close()" class="pull-right btn btn-warning">X</button>
+	        </div>
+	        <div class="modal-body">
+	        	<iframe src="https://docs.google.com/document/d/1v7Z3Lpu3PrLjQxqHXF6GfemanG5jP3XflPg7tX2MS4s/pub?embedded=true"class="resume-body"></iframe>
+	        </div>
+	    </script>
+	</div>
+
+	<!-- Portfolio Modal Body -->
+	<div>
+	    <script type="text/ng-template" id="portfolioContent.html">
+	        <div class="modal-header">
+	            <button ng-click="close()" class="pull-right btn btn-warning">X</button>
+	        </div>
+	        <div class="container">
+	        	<div class="row">
+	        		<div class="col-md-6">
+	        			<a href="map-project.justinvanvoorst.com"><img src="../images/map-project.jpg" class="portfolio-images"></a>
+	        		</div>
+		        	<div class="col-md-6">
+		        		<p>I built this page as my midterm project at RefactorU in order to bring together all of the front-end technologies I have been working with as well as explore what could be done with mapping, something I have always been interested in. To that end this webpage is built entirely in the front-end using HTML/CSS, Bootstrap, Angular, Angular-animate, Leaflet, and Leaflet Angular directive. You can click on the image to be taken to the website.</p>
+		        	</div>
+		        </div>
+		        <div class="row next-row">
+		        	<div class="col-md-6">
+		        		<img src="../images/bcard.jpg" class="portfolio-images portfolio-images-last"></a>
+		        	</div>
+		        	<div class="col-md-6">
+		        		<p>This is my current business card that I designed. While I am not really a graphic designer I did have fun working on it and learning to better use vector graphics software.</p>
+		        	</div>
+		        </div>
+		    </div>
+	    </script>
+	</div>
+
+
+	<script type="text/javascript" src="../js/main.js"></script>
+</body>
+</html>
