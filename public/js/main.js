@@ -96,11 +96,6 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 		$scope.markers[i].icon = $scope.extraMarkerIconBlue;
 	}
 
-	// // changes the map tiles provider
-	// $scope.changeMapTiles = function(provider) {
-	// 	$scope.tiles = mapTiles[provider];
-	// };
-
 	// centers the map on the selected city
 	$scope.center = angular.copy($scope.Boulder);
 	$scope.changeCenter = function(location) {
@@ -120,8 +115,9 @@ app.controller("mapController", ['$scope', '$modal', '$log', 'geolocation', func
 	// sets map center to current geolocation
 	$scope.centerCurrent = function() {
 		$scope.center = {
-			lat: $scope.coords.lat,
-			lng: $scope.coords.long
+			lat: $scope.coords.$$state.value.lat,
+			lng: $scope.coords.$$state.value.long,
+            zoom: 12
 		};
 	};
 

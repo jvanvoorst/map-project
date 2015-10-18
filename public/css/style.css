@@ -2,7 +2,7 @@
 	width: 100%;
 }
 .jmb-image {
-	background-image: url("../images/IMG_0626.jpg");
+	background-image: url("../images/fall2-crop.jpg");
 	background-size: cover;	
 	margin-top: 25px;
 }
@@ -14,10 +14,14 @@
 }
 .message {
 	color: #E6E6E6;
+	padding-top: 70px
 }
 .list-group-background-14er {
 	background-color: #E6E6E6;
 }
 .list-group-background-user {
 	background-color: #E6E6E6;
+}
+body {
+	background-color: #34495e;
 }

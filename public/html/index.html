@@ -7,29 +7,28 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-animate.min.js"></script>
-    <script type="text/javascript"src="js/angular-simple-logger.js"></script>
+    <script type="text/javascript"src="../js/angular-simple-logger.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
-    <script type="text/javascript" src="js/angularjs-geolocation.min.js"></script>
-    <script src="js/leaflet.extra-markers.js"></script>
-    <script src="js/angular-leaflet-directive.min.js"></script>
-	<script type="text/javascript" src="js/markers.js"></script> 
-    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="../js/angularjs-geolocation.min.js"></script>
+    <script src="../js/leaflet.extra-markers.js"></script>
+    <script src="../js/angular-leaflet-directive.min.js"></script>
+	<script type="text/javascript" src="../js/markers.js"></script> 
+    <script type="text/javascript" src="../js/main.js"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
-    <link rel="stylesheet" href="css/leaflet.extra-markers.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="../css/leaflet.extra-markers.css">
+    <link rel="stylesheet" type="text/css" href="../	css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 </head>
 
 <body ng-controller="mapController">
 
-
 	<div class="container">
 		<div class="jumbotron jmb-image" ng-click="changeCenter(tmb)">
 			<div class="row">
-				<h1 class="pull-right title">Map Project</h1>
+				<h1 class="title">Map Project</h1>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
@@ -37,6 +36,7 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="row">
 			<div class="col-md-12">
 				<!-- This is the map being displayed -->
@@ -47,7 +47,7 @@
 			
 			<!-- Buttons for changing map center location -->
 			<div class="col-md-4 pull-right">
-				<button ng-click="centerCurrent()" class="btn btn-sm btn-default pull-right" disabled="disabled">Current Location</button>
+				<button ng-click="centerCurrent()" class="btn btn-sm btn-default pull-right">Current Location</button>
 				<button ng-click="changeCenter(London)" class="btn btn-sm btn-default pull-right">London</button>
 				<button ng-click="changeCenter(Boulder)" class="btn btn-sm btn-default pull-right">Boulder</button>
 			</div>
@@ -119,7 +119,7 @@
 	    </script>
 	</div>
 
-	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="../js/main.js"></script>
 
 
 </body>
